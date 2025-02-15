@@ -1,0 +1,30 @@
+version: '3.9'
+
+services:
+  web:
+    build: .
+    command: python -u app.py
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    networks:
+      - to_do_list_network
+
+  db:
+    image: mongo:latest
+    container_name: test_mongodb
+    environment:
+      MONGO_INITDB_DATABASE: test_db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: admin
+    ports:
+      - "27017:27017"
+    networks:
+      - to_do_list_network
+
+networks:
+  to_do_list_network:
+    driver: bridge
